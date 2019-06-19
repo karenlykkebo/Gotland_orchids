@@ -12,15 +12,9 @@ knitr::opts_chunk$set(echo = FALSE)
 library(dplyr)
 library(gganimate)
 library(oRchid)
+library(knitr)
 ```
 
-## Orchids in rain
-
-`flowerp(2015)`
-
-<div align="left">
-<img src = "rain.tiff" width=400 height=350>
-</div>
 
 ## All the orchids
 
@@ -58,3 +52,14 @@ dat %>%
 knitr::include_graphics("orchids.gif")
 
 ```
+
+
+## Orchids in rain
+
+`flowerp(2015)`
+
+``` {r }
+knitr::include_graphics("rain.tif")
+```
+
+
