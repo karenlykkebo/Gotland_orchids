@@ -1,0 +1,95 @@
+---
+title: "RaukR group project"
+output: html_notebook
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(data.table)
+library(tidyverse)
+library(ggplot2)
+library(ggmap)
+library(gganimate)
+library(sf)
+library(ggpubr)
+
+orchids<-as_tibble(fread("data/orchids_gotland/orchidsgotland.csv"))
+
+p1<-orchids %>% ggplot(aes(decimalLongitude,decimalLatitude))+
+  geom_point(aes(col=species),alpha=0.4)
+
+
+anim <- p1+ 
+  transition_states(year,
+                    transition_length = 2,
+                    state_length = 1)
+
+#ggplot(orchids, aes(x = Petal.Width, y = Petal.Length)) + 
+  #geom_point(aes(group = seq_along(Species))) + 
+  #transition_states(species,
+                   # transition_length = 2,
+                  #  state_length = 1)
+#
+```
+
+```{r}
+gotland.map <- get_stamenmap(c(left = 17.8, 
+                              bottom = 57.0,
+                              right = 19.5,
+                              top = 58.1),
+                              zoom = 10,
+                            maptype = "toner-background")
+ggmap(gotland.map,extent="device")+geom_point(data=aes(decimalLongitude,decimalLatitude))+geom_point(aes(col=species),alpha=0.4)+
+  geom_density_2d(data=orchids,aes(x=decimalLongitude,y=decimalLatitude))
+?get_stamenmap
+```
+
+```{r}
+sverige<-st_read("C:/Users/dich9390/Dropbox/PHD/data/SWE_adm/SWE_adm1.shp")
+sverige %>% filter(NAME_1=="Gotland") %>% 
+  ggplot()+geom_sf()+
+  theme_pubclean()+
+  geom_point(data=orchids,aes(decimalLongitude,decimalLatitude,col=species))+labs_pubr()
+
+```
+
+Meterological data
+
+```{r}
+stationer<-list.files(path="data/temp_gotland/month/dat_latlon")
+
+#temperatur_gotland<- temperatur %>%  map_dfr(fread, .id = temperatur,skip=9,fill=T,header=T,sep=";")
+
+#keeping file names and skip lines:
+#data <- data_frame(station = temperatur) %>% # create a data frame
+                                         # holding the file names
+ # mutate(file_contents = map(station,          # read files into
+  #         ~ fread(file.path("data/temp_gotland/month/dat_latlon", .),skip=10,fill=T,header=T,sep=","))) # a new data column
+
+
+tempdata <- tibble(station = stationer) %>% # create a data frame
+                                         # holding the file names
+  mutate(file_contents = map(station,          # read files into
+           ~ fread(file.path("data/temp_gotland/month/dat_latlon", .),header=T,sep=","))) # a new data column
+
+#listing data as lists, unlist:
+temp_got<-unnest(tempdata)
+
+temp_got %>% group_by(station) %>% summarise(avg=mean(na.omit(Lufttemperatur)))
+
+library(lubridate)
+
+temp_got<-rename(temp_got,"Time1"="Från Datum Tid (UTC)")
+
+temp_got1<-temp_got %>% mutate(Time2=mdy(if_else(str_detect(Time1,"/")),NA))
+
+                  
+                  mutate(longitude = if_else(str_detect(station,"071701"),
+
+
+temp_got %>% separate(`Från Datum Tid (UTC)`,
+                      into=c("year","day","month"),
+                      sep=2,extra = merge)
+```
+
