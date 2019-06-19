@@ -82,14 +82,13 @@ library(lubridate)
 
 temp_got<-rename(temp_got,"Time1"="Från Datum Tid (UTC)")
 
-temp_got1<-temp_got %>% mutate(Time2=if_else(str_detect(Time1,"/"),mdy_hm(Time1),ymd_hm(Time1)))
+#temp_got1<-temp_got %>% mutate(Time2=if_else(str_detect(Time1,"/"),mdy_hm(Time1),ymd_hm(Time1)))
 
-                  
-                  mutate(longitude = if_else(str_detect(station,"071701"),
+temp_got1<-temp_got %>% separate(`Representativ månad`,
+                                 into=c("year","month"),
+                                 sep="-")
 
 
-temp_got %>% separate(`Från Datum Tid (UTC)`,
-                      into=c("year","day","month"),
-                      sep=2,extra = merge)
+fwrite(temp_got1,"data/temp_gotland/month/temp_gotland_clean.csv")        
 ```
 
