@@ -24,11 +24,23 @@ orchidsmap <- function(my_df, x1, y1, z1) {
     
 }
 
+# use function 
 orchids %>% 
-orchidsmap("long", "lat", "genus") +
-  transition_states(year, 
-                    transition_length = 0.5,
-                    state_length = 1)
+  filter(year == 2015) %>% 
+  orchidsmap("long", "lat", "genus") 
+
+
+monthlabel <- c(month.abb)
+
+# Make graph of rain
+rain_got %>%
+  filter(year > 1990) %>% 
+  ggplot() +
+  geom_density(aes(Rain, fill = month), alpha = 0.6) +
+  scale_y_discrete(expand = c(0.01, 0.01))
+
+
+
 
 
 
