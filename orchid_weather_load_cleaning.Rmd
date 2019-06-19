@@ -82,7 +82,7 @@ library(lubridate)
 
 temp_got<-rename(temp_got,"Time1"="Från Datum Tid (UTC)")
 
-temp_got1<-temp_got %>% mutate(Time2=mdy(if_else(str_detect(Time1,"/")),NA))
+temp_got1<-temp_got %>% mutate(Time2=if_else(str_detect(Time1,"/"),mdy_hm(Time1),ymd_hm(Time1)))
 
                   
                   mutate(longitude = if_else(str_detect(station,"071701"),
