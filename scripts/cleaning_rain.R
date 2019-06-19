@@ -20,8 +20,9 @@ rain_got %>%
 
 
 # Rename and seperate columns in proper dates
-rain_got %>%  
-  rename("Time1" = "Representativ månad") %>% 
+rain_got <- rain_got %>%  
+  rename("Time1" = "Representativ månad",
+         "Rain" = "Nederbördsmängd") %>% 
   separate(Time1, 
            into = c("year", "month"),
            sep = "-")
