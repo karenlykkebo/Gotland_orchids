@@ -41,10 +41,14 @@ rain_got %>%
 
 
 
+# Save plot for presentation 
+dat <- orchids
+p1 <- dat %>% 
+  orchidsmap("long", "lat", "genus") +
+  transition_states(year, transition_length = 3, state_length = 1) +
+  labs(title = "year:{closest_state}")
+
+anim_save("orchids.gif",p1)
 
 
-
-
-
-
-
+flowerp(2015)
