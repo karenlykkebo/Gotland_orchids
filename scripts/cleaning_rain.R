@@ -26,3 +26,5 @@ rain_got <- rain_got %>%
   separate(Time1, 
            into = c("year", "month"),
            sep = "-")
+
+write.csv(rain_got, file = "./data/rain_gotland.csv")
